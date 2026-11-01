@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sanger-pair-assembler"
+version = "0.2.0"
+description = "Reference-free, quality-aware assembly of paired Sanger sequencing reads"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [{name = "Sanger Pair Assembler contributors"}]
+keywords = ["Sanger", "AB1", "ABI", "bidirectional sequencing", "consensus", "16S", "Biopython"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = ["biopython>=1.83,<2"]
+
+[project.scripts]
+sanger-merge = "sanger_assembler.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
