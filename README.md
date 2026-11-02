@@ -107,7 +107,7 @@ Try the **fully synthetic** example:
 sanger-merge -f examples/toy_F.fasta -r examples/toy_R.fasta -o toy_merged.fasta
 ```
 
-## Batch assembly (introduced in v0.2.0)
+## Batch assembly
 
 Use the installed CLI to process a folder of sequencing files:
 
