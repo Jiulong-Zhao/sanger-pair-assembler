@@ -95,7 +95,7 @@ python -m sanger_assembler -f 'F.ab1' -r 'R.ab1' -o result.fasta
 sanger-merge -f examples/toy_F.fasta -r examples/toy_R.fasta -o toy_merged.fasta
 ```
 
-## 三、批量拼接整个文件夹（v0.2.0 新增）
+## 三、批量拼接整个文件夹
 
 最适合你目前的 Mac 使用习惯：**只下载仓库根目录的 `sanger_merge.py` 即可**，用下面两行替换 `~/software` 里的旧脚本，然后对测序文件夹运行：
 
