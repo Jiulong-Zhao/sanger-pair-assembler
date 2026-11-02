@@ -4,7 +4,7 @@
 
 **本项目使用 Python/Biopython，将 F 端和 R 端的一代测序（Sanger）结果进行质量修剪、反向互补和重叠拼接，生成共识序列 FASTA。** 无需参考基因组，适合 16S rRNA、ITS、PCR 扩增子等有重叠区域的双向测序。
 
-> 项目目前为 v0.2.0：自动共识并不等于已经人工验证。特别是测序峰图中的插入/缺失、混合峰、重复序列和引物序列，仍需核对。**不会自动去除 PCR 引物，也不适合无重叠读数的强行连接。**
+> 项目目前为 v0.2.1：自动共识并不等于已经人工验证。特别是测序峰图中的插入/缺失、混合峰、重复序列和引物序列，仍需核对。**不会自动去除 PCR 引物，也不适合无重叠读数的强行连接。**
 
 ## 功能
 
@@ -38,6 +38,37 @@ python -m pip install -e .
 ```
 
 **重要：** macOS 上 `python` 和 `python3` 可能不属于同一个解释器。始终使用 `python -m pip` 安装，并使用同一个 `python` 运行。
+
+## Windows 10/11 安装和使用
+
+Windows 与 macOS 使用同一套 Python 拼接算法，支持 AB1、FASTA、单样本和批量模式。建议使用 Python 3.12 或 3.13。下载 [Python](https://www.python.org/downloads/windows/) 并安装后，打开 PowerShell，先检查 `py --version`；如果没有 `py` 命令，可以试试 `python --version`。
+
+### PowerShell（推荐）
+
+下载 GitHub 项目 ZIP 并解压到“下载”文件夹，执行：
+
+```powershell
+cd "$HOME\Downloads\sanger-pair-assembler"
+py -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e .
+.\.venv\Scripts\python.exe -m sanger_assembler --help
+```
+
+**批量拼接**：假设 AB1 都在桌面的 `SangerReads` 文件夹中：
+
+```powershell
+.\.venv\Scripts\python.exe -m sanger_assembler --input-dir "$HOME\Desktop\SangerReads" --output-dir "$HOME\Desktop\SangerReads\assembled_results" --trim-cutoff 0.05
+```
+
+**单个样本**：
+
+```powershell
+.\.venv\Scripts\python.exe -m sanger_assembler -f "$HOME\Desktop\SangerReads\S1_F.ab1" -r "$HOME\Desktop\SangerReads\S1_R.ab1" -o "$HOME\Desktop\SangerReads\S1_merged.fasta"
+```
+
+[Windows 完整使用指南](WINDOWS_GUIDE.zh-CN.md)
+
+---
 
 ## 二、如何拼接
 

@@ -5,7 +5,7 @@ Generated from src/sanger_assembler/{core,cli,batch}.py.
 Use only Biopython as a dependency. MIT license: see LICENSE in the project.
 """
 from __future__ import annotations
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 
 """Quality-aware, reference-free assembly of two Sanger sequencing reads.
@@ -546,6 +546,7 @@ LABEL_PATTERN = re.compile(
     r'|(?:^|[._\-\s])(27f|1492r|forward|reverse|f|r))$'
 )
 DUPLICATE_SUFFIX = re.compile(r'\s*\(\d+\)$')  # Finder's "(1)" copies
+WINDOWS_RESERVED = re.compile(r'(?i)^(?:con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)')
 SAMPLE_IN_PARENS = re.compile(r'\(([^()]+)\)')
 SUMMARY_COLUMNS = [
     'sample_name', 'status', 'forward_file', 'reverse_file',
@@ -598,6 +599,9 @@ def safe_dirname(name: str) -> str:
     safe = re.sub(r'[^\w.\-]+', '_', name, flags=re.UNICODE).strip('._-')
     if safe in ('', '.', '..'):
         raise ValueError('Sample name cannot be used for a directory: {!r}'.format(name))
+    # Windows device names are reserved even when followed by a suffix.
+    if WINDOWS_RESERVED.match(safe):
+        safe = '_' + safe
     return safe
 
 

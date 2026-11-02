@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1 — Windows instructions and portability (2026-11-01)
+
+- Documented Windows 10/11 installation via PowerShell, CMD and Conda, including venv without activation.
+- Added Windows-specific batch and single-pair examples and UTF-8 TSV/Excel import guidance.
+- Added Windows GitHub Actions test matrix for Python 3.8 / 3.10 / 3.12 / 3.13.
+- Avoid reserved Windows device names (CON, AUX, NUL, COM1, LPT1, etc.) when creating sample output directories.
+- No change to sequence consensus, trimming thresholds, or batch output formats.
+
 ## 0.2.0 — Batch mode and combined exports (2026-11-01)
 
 - New `--input-dir`, `--output-dir`, and `--recursive` options for folder-based batch assembly.

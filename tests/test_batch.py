@@ -47,6 +47,10 @@ def test_real_world_filename_patterns():
     assert parse_pair_label('differential.fasta') is None
     assert parse_pair_label('nope_R_final.ab1') is None
     assert safe_dirname('S 1/@@') == 'S_1'
+    assert safe_dirname('CON') == '_CON'
+    assert safe_dirname('aux') == '_aux'
+    assert safe_dirname('LPT1.notes') == '_LPT1.notes'
+    assert safe_dirname('Sample_01') == 'Sample_01'
 
 
 def test_batch_success_fasta_tsv_and_per_sample_reports(tmp_path):
@@ -145,3 +149,14 @@ def test_standalone_file_batch_run(tmp_path):
     assert cmd.returncode == 0, cmd.stdout + cmd.stderr
     result = source / 'assembled_results' / 'all_merged.fasta'
     assert str(SeqIO.read(result, 'fasta').seq) == REF1
+
+
+def test_windows_reserved_sample_name_can_assemble(tmp_path):
+    # Input files are valid on Windows (CON_F is not reserved); output /CON is not.
+    source = tmp_path / 'input'
+    add_pair(source, 'CON_F.fasta', 'CON_R.fasta', REF1)
+    out = tmp_path / 'results'
+    result = run_cli('--input-dir', source, '--output-dir', out)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert (out / 'samples' / '_CON' / '_CON_merged.fasta').exists()
+    assert read_rows(out / 'all_merged.tsv')[0]['样本名称'] == 'CON'

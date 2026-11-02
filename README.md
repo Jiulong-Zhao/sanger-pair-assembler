@@ -4,7 +4,7 @@
 
 **A small, reference-free command-line tool for assembling a forward (F) and reverse (R) Sanger sequencing read into a consensus sequence.** Designed for routine bidirectional 16S rRNA, ITS, PCR amplicon, and other overlapping Sanger read pairs, including `.ab1` chromatogram files.
 
-> **Scientific status:** Early-stage open-source software (v0.2.0). Assemblies and unresolved indels/mismatches require chromatogram review before interpretation, publication, or database submission. It does not assess mixed templates or automatically remove PCR primer sequences.
+> **Scientific status:** Early-stage open-source software (v0.2.1). Assemblies and unresolved indels/mismatches require chromatogram review before interpretation, publication, or database submission. It does not assess mixed templates or automatically remove PCR primer sequences.
 
 ## Features
 
@@ -15,7 +15,7 @@
 - Uses per-base Phred qualities (if available) to resolve clear disagreements, otherwise writes IUPAC ambiguity codes. Flags all mismatches and indels for review.
 - Produces consensus FASTA, both oriented reads, overlap alignment, discrepancy TSV, and JSON QC summary.
 - **Batch assembly of a folder** with safe filename-based F/R pairing, per-sample reports, one combined FASTA, and a two-column TSV of merged sequences.
-- Works on macOS (Apple Silicon / Intel), Linux, and Windows with compatible Python/Biopython versions. No reference sequence required.
+- Designed for macOS (Apple Silicon / Intel), Linux, and Windows with compatible Python/Biopython versions (CI includes Windows). No reference sequence required.
 
 ## Install (macOS)
 
@@ -41,6 +41,53 @@ python -c "from Bio import SeqIO; print('Biopython is ready')"
 
 **Mac tip:** `python` and `python3` can point to *different interpreters*, even with Conda activated. Install with `python -m pip` and run with that same `python`.
 
+## Install and run (Windows 10/11)
+
+Use **Python 3.12 or 3.13** if you are installing Python for the first time. Install Python from [python.org](https://www.python.org/downloads/windows/) (or another supported Python distributor). Open **PowerShell** and verify `py --version` (or `python --version` if `py` is unavailable). Download and extract the repository ZIP, then navigate to the extracted project directory.
+
+### PowerShell — recommended, no activation required
+
+```powershell
+cd "$HOME\Downloads\sanger-pair-assembler"
+py -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e .
+.\.venv\Scripts\python.exe -m sanger_assembler --help
+```
+
+Replace `py -m venv .venv` with `python -m venv .venv` if `py` is unavailable. The following examples use an input folder on the Desktop called `SangerReads`; replace it with your actual folder.
+
+```powershell
+# Batch assembly (including all_merged.fasta and all_merged.tsv)
+.\.venv\Scripts\python.exe -m sanger_assembler --input-dir "$HOME\Desktop\SangerReads" --output-dir "$HOME\Desktop\SangerReads\assembled_results" --trim-cutoff 0.05
+
+# Single pair
+.\.venv\Scripts\python.exe -m sanger_assembler -f "$HOME\Desktop\SangerReads\S1_F.ab1" -r "$HOME\Desktop\SangerReads\S1_R.ab1" -o "$HOME\Desktop\SangerReads\S1_merged.fasta"
+```
+
+### Command Prompt (CMD)
+
+```bat
+cd /d "%USERPROFILE%\Downloads\sanger-pair-assembler"
+py -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e .
+.\.venv\Scripts\python.exe -m sanger_assembler --input-dir "%USERPROFILE%\Desktop\SangerReads" --output-dir "%USERPROFILE%\Desktop\SangerReads\assembled_results"
+```
+
+The `.venv\Scripts\python.exe` invocation **does not require environment activation** and avoids PowerShell script execution-policy issues. Alternatively, activate via `.\.venv\Scripts\Activate.ps1` in PowerShell or `.\.venv\Scripts\activate.bat` in CMD; then use `sanger-merge` directly.
+
+### Standalone script on Windows
+
+To use only `sanger_merge.py` rather than installing the package, first install Biopython in the virtual environment:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install "biopython>=1.83,<2"
+.\.venv\Scripts\python.exe .\sanger_merge.py --input-dir "$HOME\Desktop\SangerReads" --output-dir "$HOME\Desktop\SangerReads\assembled_results"
+```
+
+For a Conda installation, use **Anaconda Prompt**: `conda create -n sanger python=3.12 -y`, `conda activate sanger`, `python -m pip install -e .`, then run `sanger-merge --input-dir "C:\path\to\reads"`.
+
+**Windows notes:** Quote paths containing spaces/brackets, use double quotes in PowerShell/CMD (not shell-style single quotes in CMD), and do not use bash-only `source` or `~/` examples. If Excel shows garbled Chinese column names in `all_merged.tsv`, use **Data > From Text/CSV**, select UTF-8 and the tab delimiter. Output sequences themselves are unchanged. More troubleshooting in the [Chinese Windows guide](WINDOWS_GUIDE.zh-CN.md).
+
 ## Quick start
 
 ```bash
@@ -60,7 +107,7 @@ Try the **fully synthetic** example:
 sanger-merge -f examples/toy_F.fasta -r examples/toy_R.fasta -o toy_merged.fasta
 ```
 
-## Batch assembly (new in v0.2.0)
+## Batch assembly (introduced in v0.2.0)
 
 Use the installed CLI to process a folder of sequencing files:
 

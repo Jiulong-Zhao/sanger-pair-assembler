@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sanger-pair-assembler"
-version = "0.2.0"
+version = "0.2.1"
 description = "Reference-free, quality-aware assembly of paired Sanger sequencing reads"
 readme = "README.md"
 requires-python = ">=3.8"

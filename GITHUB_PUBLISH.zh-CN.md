@@ -24,7 +24,7 @@
 cd ~/Downloads/sanger-pair-assembler
 git init
 git add .
-git commit -m "Release v0.2.0: batch assembly support"
+git commit -m "Release v0.2.1: Windows docs and portability"
 git branch -M main
 ```
 
@@ -37,14 +37,14 @@ git push -u origin main
 
 GitHub 通常不支持通过普通登录密码执行 `git push`；可使用 GitHub CLI (`gh auth login`)、系统凭据管理器或 Personal Access Token。需要安装 GitHub CLI 时，可以使用 <https://cli.github.com/>。
 
-## 发布 v0.2.0 Release（可选）
+## 发布 v0.2.1 Release（可选）
 
 ```bash
-git tag v0.2.0
-git push origin v0.2.0
+git tag v0.2.1
+git push origin v0.2.1
 ```
 
-之后在 GitHub 的 **Releases → Draft a new release** 选 `v0.2.0`，介绍功能，并附上项目 ZIP 或 wheel（如果你希望提供离线下载）。
+之后在 GitHub 的 **Releases → Draft a new release** 选 `v0.2.1`，介绍功能，并附上项目 ZIP 或 wheel（如果你希望提供离线下载）。
 
 ## 发布前自查
 
@@ -55,3 +55,7 @@ git push origin v0.2.0
 - [ ] 有需要时修改许可证的署名或增加作者、机构和致谢；不要未经许可使用他人的名字或机构名
 
 本项目以 MIT License 开源。若后续发布科研论文或作为正式研究分析工具，建议保存原始 AB1、软件版本、修剪阈值、比对参数和人工峰图复核记录。
+
+## Windows publishing notes
+
+The source code can be uploaded from Windows as well. For the full Windows PowerShell and CMD commands, see [WINDOWS_GUIDE.zh-CN.md](WINDOWS_GUIDE.zh-CN.md). After publishing, visit GitHub Actions to verify both `windows-latest` and `ubuntu-latest` jobs.
